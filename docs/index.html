@@ -4,9 +4,98 @@
     <meta charset="utf-8">
     <title>Drunken Octopus Downloader</title>
     <link rel="stylesheet" href="style.css">
+    <script src="lib/FileSaver/FileSaver.js"></script>
     <script src="script.js"></script>
   </head>
-  <body>
-    <h1>This is a test</h1>
+  <body onLoad="javascript:onLoad()">
+    <h1>Drunken Octopus Downloader</h1>
+
+    <div>
+        <label for="machine">Machine:</label>
+        <select id = "machine" onchange="javascript:onChange()">
+            <option value="Gladiola">Mini
+            <option value="Hibiscus">Mini 2
+            <option value="Guava">TAZ 4
+            <option value="Juniper">TAZ 5
+            <option value="Oliveoil">TAZ 6
+            <option value="Redgum">TAZ Workhorse
+            <option value="Quiver">TAZ Pro
+        </select>
+    </div>
+
+    <div>
+        <label for="toolhead">Toolhead:</label>
+        <select id = "toolhead" onchange="javascript:onChange()">
+            <option value="AchemonSphinx">Small Layer
+            <option value="CecropiaSilk">Single Extruder (Aero v2)
+            <option value="BandedTiger">Hardened Steel
+            <option value="DingyCutworm">Hardened Steel+
+            <option value="Goldenrod">Hardend Extruder
+            <option value="Quiver">Dual Extruder
+            <option value="Yellowfin">Dual Extruder V3
+            <option value="Longfin">FlexyDually
+            <option value="E3D_Hermera">E3D Hermera
+            <option value="Tilapia">Single Extruder
+            <option value="Angelfish">Aerostruder
+            <option value="Opah">Moarstruder
+            <option value="Javelin">DualExtruderV2
+            <option value="Kanyu">Flexystruder
+            <option value="Buda">SingleExtruder
+            <option value="Albatross">Flexystruder
+            <option value="Finch">Aerostruder
+        </select>
+    </div>
+
+    <div>
+        <label for="board">Board:</label>
+        <select id = "board" onchange="javascript:onChange()">
+            <option value="Standard">Standard
+            <option value="Einsy">Einsy-Rambo
+            <option value="Archim">Archim 2.0
+        </select>
+    </div>
+
+    <div>
+        <label for="probe">Probe Style:</label>
+        <select id = "probe" onchange="javascript:onChange()">
+            <option value="Standard">Standard
+            <option value="BLTouch">BLTouch
+        </select>
+    </div>
+
+    <div>
+        <label for="display">Display:</label>
+        <select id = "display" onchange="javascript:onChange()">
+            <option value="Standard">Standard
+            <option value="LCD">B&amp;W LCD
+            <option value="Touch">Touch Screen
+        </select>
+    </div>
+
+    <div>
+        <label for="media">Media:</label>
+        <select id = "media" onchange="javascript:onChange()">
+            <option value="Standard">Standard
+            <option value="SD">SD Card
+            <option value="USB">USB Thumb Drive
+        </select>
+    </div>
+
+    <div>
+        <label for="runout">Runout Detection:</label>
+        <select id = "runout" onchange="javascript:onChange()">
+            <option value="Standard">Standard
+            <option value="Magnetic">Magnetic
+        </select>
+    </div>
+    <div id="premium">
+        <label for="password">Password:</label>
+        <input type="text" id="password"> This firmware is for Patreon supporters only.
+    </div>
+    <br>
+    <div>
+        <label for="download"></label>
+        <button id="download" onclick="javascript:onDownload()">Download</button>
+    </div>
   </body>
 </html>

@@ -1,0 +1,11 @@
+label {
+    display: inline-block;
+    width: 20vw;
+    line-height: 1.5em;
+}
+
+select, input {
+    box-sizing: border-box;
+    display: inline-block;
+    width: 20vw;
+}

@@ -1,0 +1,57 @@
+const fs = require('fs').promises;
+const ff = require('file-regex');
+
+// https://stackoverflow.com/questions/6122571/simple-non-secure-hash-function-for-javascript
+const hashJoaat=function(b){for(var a=0,c=b.length;c--;)a+=b.charCodeAt(c),a+=a<<10,a^=a>>6;a+=a<<3;a^=a>>11;return((a+(a<<15)&4294967295)>>>0).toString(16)};
+
+function makeFilename(attr, pass = "") {
+    return hashJoaat(attr.join() + pass);
+}
+
+async function makeDist(dir, pass) {
+    const result = [];
+    const files = await ff(dir, /(\.hex|\.bin)$/, 10);
+    for(let {dir, file} of files) {
+        const [_,machine_code,machine_name,toolhead_code,toolhead_name] = file.split("_");
+
+        // Determine the board type
+        let board = "Standard";
+        if(machine_name.includes("Archim")) board = "Archim";
+        if(machine_name.includes("Einsy")) board = "Einsy";
+
+        // Determine the probing type
+        let probe = "Standard";
+        if(machine_name.includes("BLTouch")) probe = "BLTouch";
+
+        // Determine the LCD type
+        let display = "Standard";
+        if(machine_name.includes("LCD")) board = "LCD";
+        if(machine_name.includes("Touch")) board = "Touch";
+
+        // Determine the card type
+        let media = "Standard";
+        if(machine_name.includes("SD")) media = "SD";
+        if(machine_name.includes("USB")) media = "USB";
+        
+        // Determine the runout sensor type
+        let runout = "Standard";
+        if(machine_name.includes("HallEffect")) media = "Magnetic";
+        
+        // Determine if this is a factory build
+        let factory = dir.includes("standard");
+
+        const attr = [machine_code, toolhead_code, board, probe, display, media, runout, factory, file]; 
+        result.push(attr);
+
+        // Copy the binary file over to the resources directory
+        await fs.copyFile(dir + "/" + file, 'docs/resources/' + makeFilename(attr, factory ? "" : pass));
+    }
+
+    await fs.writeFile('docs/resources/index.json', JSON.stringify(result));
+}
+
+if(process.argv.length == 4) {
+    makeDist(process.argv[2], process.argv[3]);
+} else {
+    console.log(process.argv[0], process.argv[1], "[directory] [password]");
+}
