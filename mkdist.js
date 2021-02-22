@@ -29,8 +29,9 @@ async function makeDist(dir, pass) {
 
         // Determine the LCD type
         let display = "Standard";
+        const regex = new RegExp('[^B][^L]Touch');
         if(machine_name.includes("LCD")) display = "LCD";
-        if(machine_name.includes("Touch")) display = "Touch";
+        if(regex.test(machine_name)) display = "Touch";
 
         // Determine the card type
         let media = "Standard";
