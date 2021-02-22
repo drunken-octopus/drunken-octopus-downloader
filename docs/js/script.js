@@ -124,6 +124,7 @@ async function getFirmwareFile() {
 }
 
 async function onDownload() {
+    const name = selectedFirmware[filenameField];
     const {data, url} = await getFirmwareFile();
     saveAs(url, name);
 }
