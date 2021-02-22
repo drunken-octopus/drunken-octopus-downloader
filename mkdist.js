@@ -29,8 +29,8 @@ async function makeDist(dir, pass) {
 
         // Determine the LCD type
         let display = "Standard";
-        if(machine_name.includes("LCD")) board = "LCD";
-        if(machine_name.includes("Touch")) board = "Touch";
+        if(machine_name.includes("LCD")) display = "LCD";
+        if(machine_name.includes("Touch")) display = "Touch";
 
         // Determine the card type
         let media = "Standard";
@@ -39,7 +39,7 @@ async function makeDist(dir, pass) {
         
         // Determine the runout sensor type
         let runout = "Standard";
-        if(machine_name.includes("HallEffect")) media = "Magnetic";
+        if(machine_name.includes("HallEffect")) runout = "Magnetic";
         
         // Determine if this is a factory build
         let factory = dir.includes("standard");
