@@ -1,11 +1,27 @@
 const fields = ["machine","toolhead","board","probe","display","media","runout"];
 const filenameField = 8;
-const premiumField  = 7;
-//const downloadUrl   = "resources/";
-const downloadUrl = "https://github.com/drunken-octopus/drunken-octopus-downloader/releases/latest/download/"
+const factoryField  = 7;
+const downloadUrl   = "resources/";
+const isDesktop     = false;
 
-async function fetchFile(url) {
-    const response = await fetch(url);
+class ProgressBar {
+    static message(msg) {
+        document.getElementById("progress").style.visibility = "visible";
+        document.getElementById("upload_status").innerText = msg;
+    }
+
+    static progress(progress) {
+        document.getElementById("progress").style.visibility = "visible";
+        document.getElementById("upload_progress").value = progress;
+    }
+
+    static hide() {
+        document.getElementById("progress").style.visibility = "hidden";
+    }
+}
+
+async function fetchFile(url, headers) {
+    const response = await fetch(url, {headers});
     if (response.ok) {
         return response.arrayBuffer();
     } else {
@@ -13,7 +29,7 @@ async function fetchFile(url) {
     }
 }
 
-async function fetchJSON(url) {
+async function fetchJSON(url, options) {
     const response = await fetch(url);
     if (response.ok) {
         return response.json();
@@ -30,7 +46,8 @@ function makeFilename(attr, pass = "") {
 }
 
 async function onLoad() {
-    db = await fetchJSON("resources/index.json");
+    document.getElementById("upload").disables = !hasSerial;
+    db = await fetchJSON(downloadUrl + "index.json");
     onChange();
 }
 
@@ -56,13 +73,15 @@ function filterMatches() {
         // Figure out which options should be visible
         forMatches(matches, row => set.add(row[i]));
         // Only show the ones that are still part of the match set
+        let first;
         for(const opt of el.children) {
-            opt.style.display = set.has(opt.value) ? "block" : "none";
+            const okay = set.has(opt.value);
+            opt.style.display = okay ? "block" : "none";
+            if(!first && okay) first = opt.value;
         }
         // Select the first element if the current element is not selectable
         if(!set.has(el.value)) {
-            const firstElement = set.values().next().value;
-            el.value = firstElement;
+            el.value = first;
         }
         // Filter the match set by the selection
         for(const [j,row] of db.entries()) {
@@ -82,23 +101,45 @@ function onChange() {
     if(firmware.length == 1) {
         btn.enabled = true;
         selectedFirmware = firmware[0];
-        premium.style.display = selectedFirmware[premiumField] ? "block" : "none";
+        premium.style.display = selectedFirmware[factoryField] ? "none" : "block";
     } else {
         btn.enabled = false;
         selectedFirmware = undefined;
     }
 }
 
-async function onDownload() {
-    if(selectedFirmware) {
-        const pass = selectedFirmware[premiumField] ? document.getElementById("password").value : "";
-        const name = selectedFirmware[filenameField];
-        const path = downloadUrl + makeFilename(selectedFirmware, pass);
-        try {
-            await fetchFile(path); // Check for existence
-            saveAs(path, name);
-        } catch(e) {
-            alert("The password is incorrect");
+async function getFirmwareFile() {
+    try {
+        if(selectedFirmware) {
+            const factory = selectedFirmware[factoryField];
+            const pass = factory ? "" : document.getElementById("password").value;
+            const name = selectedFirmware[filenameField];
+            const url = downloadUrl + makeFilename(selectedFirmware, pass);
+            const data = await fetchFile(url); // See whether the file exists
+            console.log(data);
+            return {data: data, url: url};
         }
+    } catch(e) {
+        alert("The password is incorrect");
+    }
+}
+
+async function onDownload() {
+    const {data, url} = await getFirmwareFile();
+    saveAs(url, name);
+}
+
+async function onUpload() {
+    const name = selectedFirmware[filenameField];
+    const {data, url} = await getFirmwareFile();
+    const ext = name.split(".").pop();
+    console.log(data);
+    try {
+        switch(ext) {
+            case "bin": flashFirmwareWithBossa(data); break;
+            case "hex": flashFirmwareWithStk(data); break;
+        }
+    } catch(e) {
+        alert(e);
     }
 }

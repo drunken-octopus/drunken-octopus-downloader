@@ -1,5 +1,6 @@
 const fs = require('fs').promises;
 const ff = require('file-regex');
+const resourcePath = "docs/resources";
 
 // https://stackoverflow.com/questions/6122571/simple-non-secure-hash-function-for-javascript
 const hashJoaat=function(b){for(var a=0,c=b.length;c--;)a+=b.charCodeAt(c),a+=a<<10,a^=a>>6;a+=a<<3;a^=a>>11;return((a+(a<<15)&4294967295)>>>0).toString(16)};
@@ -11,6 +12,9 @@ function makeFilename(attr, pass = "") {
 async function makeDist(dir, pass) {
     const result = [];
     const files = await ff(dir, /(\.hex|\.bin)$/, 10);
+
+    await fs.rmdir(resourcePath, {recursive: true});
+    await fs.mkdir(resourcePath);
     for(let {dir, file} of files) {
         const [_,machine_code,machine_name,toolhead_code,toolhead_name] = file.split("_");
 
@@ -43,11 +47,15 @@ async function makeDist(dir, pass) {
         const attr = [machine_code, toolhead_code, board, probe, display, media, runout, factory, file]; 
         result.push(attr);
 
+        const path = resourcePath + "/" + makeFilename(attr, factory ? "" : pass);
         // Copy the binary file over to the resources directory
-        await fs.copyFile(dir + "/" + file, 'docs/resources/' + makeFilename(attr, factory ? "" : pass));
+        await fs.copyFile(dir + "/" + file, path);
+        console.log("Writing", path);
     }
-
-    await fs.writeFile('docs/resources/index.json', JSON.stringify(result));
+    const path = resourcePath + "/index.json";
+    console.log("Writing", path);
+    await fs.writeFile(resourcePath + "/index.json", JSON.stringify(result));
+    console.log();
 }
 
 if(process.argv.length == 4) {

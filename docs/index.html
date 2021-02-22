@@ -2,13 +2,15 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Drunken Octopus Downloader</title>
+    <title>Drunken Octopus Firmware Tool</title>
     <link rel="stylesheet" href="style.css">
     <script src="lib/FileSaver/FileSaver.js"></script>
-    <script src="script.js"></script>
+    <script src="js/WebSerialAdapter.js"></script>
+    <script src="js/SerialPort.js"></script>
+    <script src="js/script.js"></script>
   </head>
   <body onLoad="javascript:onLoad()">
-    <h1>Drunken Octopus Downloader</h1>
+    <h1>Drunken Octopus Firmware Tool</h1>
 
     <div>
         <label for="machine">Machine:</label>
@@ -26,21 +28,22 @@
     <div>
         <label for="toolhead">Toolhead:</label>
         <select id = "toolhead" onchange="javascript:onChange()">
+            <option value="Buda">Single Extruder
+            <option value="Tilapia">Single Extruder
+            <option value="Quiver">Dual Extruder
+            <option value="Gladiola">Single Extruder
+            <option value="Goldenrod">Hardened Extruder
+            <option value="CecropiaSilk">Aerostruder v2
             <option value="AchemonSphinx">Small Layer
-            <option value="CecropiaSilk">Single Extruder (Aero v2)
             <option value="BandedTiger">Hardened Steel
             <option value="DingyCutworm">Hardened Steel+
-            <option value="Goldenrod">Hardend Extruder
-            <option value="Quiver">Dual Extruder
-            <option value="Yellowfin">Dual Extruder V3
+            <option value="Yellowfin">Dual Extruder v3
             <option value="Longfin">FlexyDually
             <option value="E3D_Hermera">E3D Hermera
-            <option value="Tilapia">Single Extruder
             <option value="Angelfish">Aerostruder
             <option value="Opah">Moarstruder
-            <option value="Javelin">DualExtruderV2
+            <option value="Javelin">Dual Extruder v2
             <option value="Kanyu">Flexystruder
-            <option value="Buda">SingleExtruder
             <option value="Albatross">Flexystruder
             <option value="Finch">Aerostruder
         </select>
@@ -90,12 +93,26 @@
     </div>
     <div id="premium">
         <label for="password">Password:</label>
-        <input type="text" id="password"> This firmware is for Patreon supporters only.
+        <input type="text" id="password"> This firmware is for <a href="https://www.patreon.com/marciot">Patreon supporters</a> only.
+    </div>
+    <div id="progress">
+        <label for="upload_progress" id="upload_status">Progress:</label><progress id="upload_progress">
     </div>
     <br>
     <div>
         <label for="download"></label>
-        <button id="download" onclick="javascript:onDownload()">Download</button>
+        <button id="download" onclick="javascript:onDownload()">Download File</button>
+        <button id="upload"   onclick="javascript:onUpload()">Upload to Printer</button>
     </div>
+    <br>
+    <details>
+        <summary><h2>How to configure your browser to allow firmware updating</h2></summary>
+        <ul>
+            <li>Make sure you are using <strong>Chrome version 88</strong> or better
+            <li>Type <strong>"chrome://flags"</strong> into the browser address bar
+            <li>Set <strong>"Experimental Web Platform features"</strong> to <strong>"Enabled"</strong>
+            <li>Restart your Chrome web browser and return to this page
+        </ul>
+    </details>
   </body>
 </html>
