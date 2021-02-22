@@ -46,7 +46,7 @@ function makeFilename(attr, pass = "") {
 }
 
 async function onLoad() {
-    document.getElementById("upload").disables = !hasSerial;
+    document.getElementById("upload").disabled = !hasSerial;
     db = await fetchJSON(downloadUrl + "index.json");
     onChange();
 }
@@ -116,7 +116,6 @@ async function getFirmwareFile() {
             const name = selectedFirmware[filenameField];
             const url = downloadUrl + makeFilename(selectedFirmware, pass);
             const data = await fetchFile(url); // See whether the file exists
-            console.log(data);
             return {data: data, url: url};
         }
     } catch(e) {
