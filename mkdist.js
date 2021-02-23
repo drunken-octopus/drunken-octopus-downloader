@@ -45,7 +45,7 @@ async function makeDist(dir, pass) {
         // Determine if this is a factory build
         let factory = dir.includes("standard");
 
-        const attr = [machine_code, toolhead_code, board, probe, display, media, runout, factory, file]; 
+        const attr = [machine_code, board, probe, toolhead_code, display, media, runout, factory, file]; 
         result.push(attr);
 
         const path = resourcePath + "/" + makeFilename(attr, factory ? "" : pass);

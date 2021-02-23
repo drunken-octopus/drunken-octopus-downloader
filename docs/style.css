@@ -16,10 +16,15 @@ select, input, progress {
 
 summary h2 {
     display: inline-block;
+    margin-bottom: 0;
 }
 
 summary {
     outline: none;
+}
+
+li {
+    margin-bottom: 1em;
 }
 
 #progress {

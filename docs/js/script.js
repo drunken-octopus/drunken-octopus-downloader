@@ -1,4 +1,4 @@
-const fields = ["machine","toolhead","board","probe","display","media","runout"];
+const fields = ["machine","board","probe","toolhead","display","media","runout"];
 const filenameField = 8;
 const factoryField  = 7;
 const downloadUrl   = "resources/";
@@ -120,6 +120,7 @@ async function getFirmwareFile() {
         }
     } catch(e) {
         alert("The password is incorrect");
+        throw e;
     }
 }
 
@@ -133,11 +134,13 @@ async function onUpload() {
     const name = selectedFirmware[filenameField];
     const {data, url} = await getFirmwareFile();
     const ext = name.split(".").pop();
-    console.log(data);
+    const usb_marlin = {usbVendorId: 0x27B1, usbProductId: 0x0001};
+    const usb_samba  = {usbVendorId: 0x03EB, usbProductId: 0x6124};
+    const attr = {usb_marlin, usb_samba, data};
     try {
         switch(ext) {
-            case "bin": flashFirmwareWithBossa(data); break;
-            case "hex": flashFirmwareWithStk(data); break;
+            case "bin": flashFirmwareWithBossa(attr); break;
+            case "hex": flashFirmwareWithStk(attr); break;
         }
     } catch(e) {
         alert(e);
