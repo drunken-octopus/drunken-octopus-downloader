@@ -46,8 +46,23 @@ function makeFilename(attr, pass = "") {
 }
 
 async function onLoad() {
+    // Enable buttons
     document.getElementById("upload").disabled = !hasSerial;
-    db = await fetchJSON(downloadUrl + "index.json");
+    
+    // Populate the releases menu
+    const el = document.getElementById("release");
+    const releases = await fetchFile(downloadUrl + "releases.txt");
+    const enc = new TextDecoder("utf-8");
+    for(const release of enc.decode(releases).trim().split("\n").reverse()) {
+        const opt = document.createElement("option");
+        opt.innerText = release;
+        el.appendChild(opt);
+    }
+    onChangeRelease();
+}
+
+async function loadRelease(release) {
+    db = await fetchJSON(downloadUrl + "index_" + release + ".json");
     onChange();
 }
 
@@ -91,6 +106,11 @@ function filterMatches() {
         }
     }
     return matches;
+}
+
+function onChangeRelease() {
+    const release = document.getElementById("release").value;
+    loadRelease(release);
 }
 
 function onChange() {

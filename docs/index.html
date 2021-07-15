@@ -13,6 +13,12 @@
     <h1>Drunken Octopus Firmware Tool</h1>
 
     <div>
+        <label for="release">Release:</label>
+        <select id = "release" onchange="javascript:onChangeRelease()">
+        </select>
+    </div>
+
+    <div>
         <label for="machine">Machine:</label>
         <select id = "machine" onchange="javascript:onChange()">
             <option value="Gladiola">Mini
@@ -94,7 +100,7 @@
     </div>
     <div id="premium">
         <label for="password">Password:</label>
-        <input type="text" id="password"> This firmware is for <a href="https://www.patreon.com/marciot">Patreon supporters</a> only.
+        <input type="text" id="password"> This firmware is for Patreon supporters. Click <a href="https://www.patreon.com/posts/quick-links-to-40938648" target="_blank">here</a> for passwords.
     </div>
     <div id="progress">
         <label for="upload_progress" id="upload_status">Progress:</label><progress id="upload_progress">

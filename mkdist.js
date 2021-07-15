@@ -9,14 +9,12 @@ function makeFilename(attr, pass = "") {
     return hashJoaat(attr.join() + pass);
 }
 
-async function makeDist(dir, pass) {
+async function makeDist(dir, release, pass) {
     const result = [];
     const files = await ff(dir, /(\.hex|\.bin)$/, 10);
 
-    await fs.rmdir(resourcePath, {recursive: true});
-    await fs.mkdir(resourcePath);
     for(let {dir, file} of files) {
-        const [_,machine_code,machine_name,toolhead_code,toolhead_name] = file.split("_");
+        const [_,machine_code,machine_name,toolhead_code,toolhead_name,version] = file.split("_");
 
         // Determine the board type
         let board = "Standard";
@@ -55,12 +53,13 @@ async function makeDist(dir, pass) {
     }
     const path = resourcePath + "/index.json";
     console.log("Writing", path);
-    await fs.writeFile(resourcePath + "/index.json", JSON.stringify(result));
+    await fs.writeFile(resourcePath + "/index_" + release + ".json", JSON.stringify(result));
+    await fs.appendFile(resourcePath + "/releases.txt", "\n" + release);
     console.log();
 }
 
-if(process.argv.length == 4) {
-    makeDist(process.argv[2], process.argv[3]);
+if(process.argv.length == 5) {
+    makeDist(process.argv[2], process.argv[3], process.argv[4]);
 } else {
-    console.log(process.argv[0], process.argv[1], "[directory] [password]");
+    console.log(process.argv[0], process.argv[1], "[directory] [release] [password]");
 }
