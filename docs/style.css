@@ -1,0 +1,32 @@
+body {
+    font-family: Tahoma, Verdana, Segoe, sans-serif;
+}
+
+label {
+    display: inline-block;
+    width: 20vw;
+    line-height: 1.5em;
+}
+
+select, input, progress {
+    box-sizing: border-box;
+    display: inline-block;
+    width: 20vw;
+}
+
+summary h2 {
+    display: inline-block;
+    margin-bottom: 0;
+}
+
+summary {
+    outline: none;
+}
+
+li {
+    margin-bottom: 1em;
+}
+
+#progress {
+    visibility: hidden;
+}

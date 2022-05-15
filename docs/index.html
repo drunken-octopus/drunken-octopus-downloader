@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Drunken Octopus Firmware Tool</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="lib/FileSaver/FileSaver.js"></script>
+    <script src="lib/serial-tools/WebSerialAdapter.js"></script>
+    <script src="lib/serial-tools/FlashPrinters.js"></script>
+    <script src="js/script.js"></script>
+  </head>
+  <body onLoad="javascript:onLoad()">
+    <h1>Drunken Octopus Firmware Tool</h1>
+
+    <div>
+        <label for="release">Release:</label>
+        <select id = "release" onchange="javascript:onChangeRelease()">
+        </select> Please <a id="release-notes-link" href="" target="_blank">read the release notes</a>.
+    </div>
+
+    <div>
+        <label for="machine">Machine:</label>
+        <select id = "machine" onchange="javascript:onChange()">
+            <option value="Gladiola">Mini
+            <option value="Hibiscus">Mini 2
+            <option value="Guava">TAZ 4 only
+            <option value="Juniper">TAZ 4 or 5
+            <option value="Oliveoil">TAZ 6
+            <option value="Redgum">TAZ Workhorse
+            <option value="Quiver">TAZ Pro
+        </select>
+    </div>
+
+    <div>
+        <label for="board">Board:</label>
+        <select id = "board" onchange="javascript:onChange()">
+            <option value="Standard">Standard
+            <option value="Einsy">Einsy-Rambo
+            <option value="Archim">Archim 2.0
+        </select>
+    </div>
+
+    <div>
+        <label for="probe">Probe Style:</label>
+        <select id = "probe" onchange="javascript:onChange()">
+            <option value="Standard">Standard
+            <option value="BLTouch">BLTouch
+        </select>
+    </div>
+
+    <div>
+        <label for="toolhead">Toolhead:</label>
+        <select id = "toolhead" onchange="javascript:onChange()">
+            <option value="Buda">Budaschnozzle
+            <option value="Tilapia">Single Extruder
+            <option value="Gladiola">Single Extruder
+            <option value="Angelfish">Aerostruder
+            <option value="Finch">Aerostruder
+            <option value="CecropiaSilk">Aerostruder v2
+            <option value="Goldenrod">Hardened Extruder
+            <option value="BandedTiger">Hardened Steel
+            <option value="DingyCutworm">Hardened Steel+
+            <option value="Quiver">Dual Extruder
+            <option value="Javelin">Dual Extruder v2
+            <option value="Yellowfin">Dual Extruder v3
+            <option value="AchemonSphinx">Small Layer
+            <option value="Kanyu">Flexystruder
+            <option value="Albatross">Flexystruder
+            <option value="Longfin">FlexyDually
+            <option value="Opah">Moarstruder
+            <option value="Lutefisk">M175 (needs testing!)
+            <option value="E3D">E3D Hermera
+            <option value="RTD">RTD Pt1000 Aero
+        </select>
+    </div>
+
+    <div>
+        <label for="display">Display:</label>
+        <select id = "display" onchange="javascript:onChange()">
+            <option value="Standard">Standard
+            <option value="LCD">B&amp;W LCD
+            <option value="Touch">Touch Screen
+        </select>
+    </div>
+
+    <div>
+        <label for="media">Media:</label>
+        <select id = "media" onchange="javascript:onChange()">
+            <option value="Standard">Standard
+            <option value="SD">SD Card
+            <option value="USB">USB Thumb Drive
+        </select>
+    </div>
+
+    <div>
+        <label for="runout">Runout Detection:</label>
+        <select id = "runout" onchange="javascript:onChange()">
+            <option value="Standard">Standard
+            <option value="Magnetic">Magnetic
+        </select>
+    </div>
+    <div id="premium">
+        <label for="password">Password:</label>
+        <input type="text" id="password"> This firmware is for Patreon supporters. Click <a href="https://www.patreon.com/posts/quick-links-to-40938648" target="_blank">here</a> for passwords.
+    </div>
+    <div id="progress">
+        <label for="upload_progress" id="upload_status">Progress:</label><progress id="upload_progress">
+    </div>
+    <br>
+    <div>
+        <label for="download"></label>
+        <button id="download" onclick="javascript:onDownload()">Download File</button>
+        <button id="upload"   onclick="javascript:onUpload()">Upload to Printer</button>
+    </div>
+    <br>
+    <details>
+        <summary><h2>How to configure your browser to allow firmware updating</h2></summary>
+        <ul>
+            <li>Make sure you are using <strong>Chrome version 88</strong> or better
+            <li>Type <strong>"chrome://flags"</strong> into the browser address bar
+            <li>Set <strong>"Experimental Web Platform features"</strong> to <strong>"Enabled"</strong>
+            <li>Restart your Chrome web browser and return to this page
+        </ul>
+    </details>
+    <details>
+        <summary><h2>Can't find what you are looking for?</h2></summary>
+        <ul>
+            <li>Due to effort involved in building firmware, only requested machine and toolhead combinations are built
+            <li>If you need something else, write me a message on <a href="https://www.patreon.com/marciot">Patreon</a> and I'll add it to the next release!
+        </ul>
+    </details>
+  </body>
+</html>
