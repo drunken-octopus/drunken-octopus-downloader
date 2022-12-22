@@ -114,7 +114,7 @@ function filterMatches() {
 
 function onChangeRelease() {
     const release = document.getElementById("release").value;
-    document.getElementById("release-notes-link").setAttribute("href","https://github.com/drunken-octopus/drunken-octopus-marlin/releases/tag/v2.1.x.rc" + release);
+    document.getElementById("release-notes-link").setAttribute("href","https://github.com/drunken-octopus/drunken-octopus-marlin/releases/tag/v2.1.x-rc" + release);
     loadRelease(release);
 }
 
